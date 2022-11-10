@@ -3,27 +3,10 @@
 @section('title', $post['title'])
 
 @section('content')
-    @if($post['is_new'])
-        <div class="alert alert-success">
-            New post!
-        </div>
-    @else
-        <div class="alert alert-warning">
-            Old post! 
-        </div>
+    @if (now()->diffInMinutes($post->created_at) < 5)
+        <div class="alert alert-info">New Post !</div>
     @endif
-
-    @unless($post['is_new'])
-        <div class="alert alert-warning">
-            It is an old post ... using unless
-        </div>
-    @endunless
-
-    @isset($post['has_comments'])
-        <div class="alert alert-info">
-            This post has comments
-        </div>
-    @endisset
-    <h1>{{ $post['title'] }}</h1>
-    <p>{{ $post['content'] }}</p>
+    <h1>{{ $post->title }}</h1>
+    <p>{{ $post->content }}</p>
+    <p>Added {{ $post->created_at->diffForHumans() }}</p>
 @endsection
