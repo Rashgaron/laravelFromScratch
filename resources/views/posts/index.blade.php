@@ -3,11 +3,11 @@
 @section('title', 'Posts')
 
 @section('content')
-    @each('posts.partials.post', $posts, 'post')
-    {{-- @forelse($posts as $key => $post)
+    {{-- @each('posts.partials.post', $posts, 'post') --}}
+    @forelse($posts as $key => $post)
         @include('posts.partials.post', [])
     @empty
         No Posts found!
-    @endforelse --}}
+    @endforelse
 
 @endsection
