@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\BlogPost;
-use App\Models\Comment;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,19 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $doe = User::factory()->johnDoe()->create();
-        $else = User::factory(20)->create();
-        
-        $users = $else->concat([$doe]);
+        if($this->command->confirm('Do you want to refresh the database?', true)){
+            $this->command->call('migrate:refresh');
+            $this->command->info('Database was refreshed');
+        }
 
-        $posts = BlogPost::factory(50)->make()->each(function($post) use ($users){
-            $post->user_id = $users->random()->id;
-            $post->save();
-        });
-
-        $comments = Comment::factory(150)->make()->each(function($comment) use ($posts){
-            $comment->blog_post_id = $posts->random()->id;
-            $comment->save();
-        });
+        $this->call([
+            UsersTableSeeder::class, 
+            BlogPostsTableSeeder::class, 
+            CommentsTableSeeder::class]);
+            
     }
 }
