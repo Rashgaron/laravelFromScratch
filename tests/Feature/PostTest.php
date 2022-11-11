@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\BlogPost;
+use App\Models\Comment;
 
 class PostTest extends TestCase
 {
@@ -16,24 +17,38 @@ class PostTest extends TestCase
         $response->assertSeeText("No Posts found!");
     }
 
-    public function testSee1BlogPostWhenThereIs1()
+    public function testSee1BlogPostWhenThereIs1WithNoComments()
     {
         // Arrange
-        $post = new BlogPost();
-        $post->title = "New Title";
-        $post->content = "New Content";
-        $post->save();
-
+        $post = $this->createDummyBlogPost();
         // Act
         $response = $this->get('/posts');
 
         // Assert
-        $response->assertSeeText("New Title");
-        $response->assertSeeText("New Content");
+        $response->assertSeeText("New title");
+        $response->assertSeeText("Content");
+        $response->assertSeeText("No comments yet!");
 
         $this->assertDatabaseHas('blog_posts', [
-            'title' => 'New Title',
+            'title' => 'New title',
         ]);
+    }
+
+    public function testSee1BlogWithComments()
+    {
+        // Arrange
+        $post = $this->createDummyBlogPost();
+        // $comment = Comment::factory()->create(['blog_post_id' => 1]);
+        Comment::factory(4)-> create([
+            'blog_post_id' => $post->id
+        ]);
+
+        // Act
+        $response = $this->get('/posts');
+
+        
+        $response->assertSeeText("4 comments");
+
     }
 
     public function testStoreValid()
@@ -91,5 +106,14 @@ class PostTest extends TestCase
         ]);
         $this->assertDatabaseHas('blog_posts', ['id'=>$post->id, 'title'=>"New title updated"]);
         $this->assertDatabaseMissing('blog_posts', ['id'=>$post->id, 'title'=>"New title"]);
+    }
+
+    private function createDummyBlogPost (): BlogPost
+    {
+        $post = new BlogPost();
+        $post->title = "New title";
+        $post->content = "Content";
+        $post->save();
+        return $post;
     }
 }
