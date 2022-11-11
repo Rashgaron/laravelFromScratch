@@ -95,7 +95,8 @@ class PostTest extends TestCase
         $post->save();
 
         $post->delete();
-        $this->assertDatabaseMissing('blog_posts', ['id'=>$post->id]);
+        // dd($post);
+        $this->assertSoftDeleted('blog_posts', ['id'=>$post->id]);
     }
 
     public function testUpdatePostCorrectly()
