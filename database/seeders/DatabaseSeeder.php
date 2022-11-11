@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-
+use App\Models\User;
+use App\Models\BlogPost;
+use App\Models\Comment;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,12 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => "John Doe",
-            'email' => "johndoe@gmail.com",
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => "aoeuae",
-        ]);
+        $doe = User::factory()->johnDoe()->create();
+        $else = User::factory(20)->create();
+        
+        $users = $else->concat([$doe]);
+
+        $posts = BlogPost::factory(50)->make()->each(function($post) use ($users){
+            $post->user_id = $users->random()->id;
+            $post->save();
+        });
+
+        $comments = Comment::factory(150)->make()->each(function($comment) use ($posts){
+            $comment->blog_post_id = $posts->random()->id;
+            $comment->save();
+        });
     }
 }
