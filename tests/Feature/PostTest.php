@@ -45,7 +45,6 @@ class PostTest extends TestCase
 
         // Act
         $response = $this->get('/posts');
-
         
         $response->assertSeeText("4 comments");
 
