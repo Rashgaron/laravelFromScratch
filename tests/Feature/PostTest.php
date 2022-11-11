@@ -59,9 +59,8 @@ class PostTest extends TestCase
             'content' => 'At least 10 characters',
         ];
 
-        $this->actingAs($user);
-
-        $this->post('/posts', $params)
+        $this->actingAs($user)
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('status');
 
@@ -77,9 +76,8 @@ class PostTest extends TestCase
             'content' => 'x',
         ];
         
-        $this->actingAs($user);
-
-        $this->post('/posts', $params)
+        $this->actingAs($user)
+            ->post('/posts', $params)
             ->assertStatus(302)
             ->assertSessionHas('errors');
         
