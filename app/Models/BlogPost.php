@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Scopes\LatestScope;
 
 class BlogPost extends Model
 {
 
     use SoftDeletes;
 
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'user_id'];
 
     use HasFactory;
     public function comments()
@@ -27,6 +28,8 @@ class BlogPost extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new LatestScope);
 
         static::deleting(function ($blogPost) {
             $blogPost->comments()->delete();
