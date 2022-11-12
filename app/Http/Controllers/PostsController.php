@@ -24,7 +24,7 @@ class PostsController extends Controller
     {
         return view(
             'posts.index', 
-            ['posts' => BlogPost::withCount('comments')->get()]
+            ['posts' => BlogPost::latest()->withCount('comments')->get()]
         );
     }
 
@@ -63,6 +63,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+        // $post = BlogPost::with(['comments' => function($query){
+        //     return $query->latest();
+        // }])->findOrFail($id);
         $post = BlogPost::with('comments')->findOrFail($id);
         return view('posts.show', ['post' => $post]);
     }
