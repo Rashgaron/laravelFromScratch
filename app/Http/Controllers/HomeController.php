@@ -18,6 +18,11 @@ class HomeController extends Controller
     {
         return view('home.contact');
     }
+
+    public function secret()
+    {
+        return view('home.secret');
+    }
 }
 
 // an action is a controller method bound to a route

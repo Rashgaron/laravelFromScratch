@@ -89,12 +89,13 @@ class PostTest extends TestCase
 
     public function testDeletePostCorrectly()
     {
-        $post = new BlogPost();
-        $post->title = "New title";
-        $post->content = "Content";
-        $post->save();
-
-        $post->delete();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
+        $this->assertDatabaseHas('blog_posts', ['id' => $post->id]);
+        $this->actingAs($user)
+                ->delete("/posts/{$post->id}")
+                ->assertStatus(302)
+                ->assertSessionHas('status');
         // dd($post);
         $this->assertSoftDeleted('blog_posts', ['id'=>$post->id]);
     }
@@ -114,12 +115,12 @@ class PostTest extends TestCase
         $this->assertDatabaseMissing('blog_posts', ['id'=>$post->id, 'title'=>"New title"]);
     }
 
-    private function createDummyBlogPost (): BlogPost
+    private function createDummyBlogPost ($userId = null): BlogPost
     {
-        $post = new BlogPost();
-        $post->title = "New title";
-        $post->content = "Content";
-        $post->save();
-        return $post;
+        return BlogPost::factory()->create([
+            'title' => 'New title',
+            'content' => 'Content',
+            'user_id' => $userId ?? $this->user()->id
+        ]);
     }
 }

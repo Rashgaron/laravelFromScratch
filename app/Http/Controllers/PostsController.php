@@ -76,9 +76,7 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        if(Gate::denies('update-post', $post)){
-            abort(403, "You can't edit this blog post.");
-        }
+        $this->authorize($post); 
 
         return view('posts.edit', ['post' => $post]);
     }
@@ -94,7 +92,7 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
         //user is passed automatically
-        $this->authorize('update-post', $post);
+        $this->authorize($post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -114,7 +112,7 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
-        $this->authorize('delete-post', $post);
+        $this->authorize($post);
 
         $post->delete();
 
