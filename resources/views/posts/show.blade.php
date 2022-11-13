@@ -3,10 +3,13 @@
 @section('title', $post['title'])
 
 @section('content')
-    @if (now()->diffInMinutes($post->created_at) < 5)
-        @component('badge', ['type' => 'primary'])
+    @if (now()->diffInMinutes($post->created_at) < 50)
+        {{-- @badge(['type'=>'primary'])
             Brand New Post!
-        @endcomponent
+        @endbadge --}}
+        <x-badge>
+            Brand New Post!
+        </x-badge>
     @endif
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
