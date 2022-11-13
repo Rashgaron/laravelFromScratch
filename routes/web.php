@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,5 +24,6 @@ Route::get('/secret', [HomeController::class, 'secret'])
     ->middleware('can:home.secret');
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/single', AboutController::class);
+Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('post.tags.index');
 Route::resource('posts', PostsController::class);
 Auth::routes();
