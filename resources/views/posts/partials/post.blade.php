@@ -9,10 +9,13 @@
     <div>{{ $post->content }}</div>
 </a>
 
-<p class="text-muted">
+{{-- <p class="text-muted">
     Added {{ $post->created_at->diffForHumans() }}
     by {{ $post->user->name }}
-</p>
+</p> --}}
+
+<x-updated date="{{ $post->created_at }}" name="{{ $post->user->name }}" :isTrashed="$post->trashed()">
+</x-updated>
 
 @if ($post->comments_count)
     <p>{{ $post->comments_count }} comments</p>

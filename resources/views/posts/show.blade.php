@@ -3,21 +3,23 @@
 @section('title', $post['title'])
 
 @section('content')
-    @if (now()->diffInMinutes($post->created_at) < 50)
-        {{-- @badge(['type'=>'primary'])
-            Brand New Post!
-        @endbadge --}}
-        <x-badge>
+    <h1>{{ $post->title }}
+        <x-badge :show="now()->diffInMinutes($post->created_at) < 50" type="primary">
             Brand New Post!
         </x-badge>
-    @endif
-    <h1>{{ $post->title }}</h1>
+    </h1>
+
     <p>{{ $post->content }}</p>
-    <p>Added {{ $post->created_at->diffForHumans() }}</p>
+
+    <x-updated date="{{ $post->created_at }}" name="{{ $post->user->name }}" :isTrashed="$post->trashed()" />
+
+    <x-updated date="{{ $post->updated_at}}" name="{{ $post->user->name }}" :isTrashed="$post->trashed()">
+        Updated
+    </x-updated>
     <h2>Comments: </h2>
     @forelse ($post->comments as $comment)
         <p>{{ $comment->content }}</p>
-        <p>Added {{ $comment->created_at->diffForHumans() }}</p>
+        <x-updated date="{{ $comment->created_at }}"  />
     @empty
         <p>No comments yet</p>
     @endforelse
