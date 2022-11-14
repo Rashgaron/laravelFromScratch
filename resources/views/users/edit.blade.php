@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col-4">
-                <img src="" alt="" class="img-thumbnail avatar">
+                <img src="{{ $user->image ? $user->image->url() : '' }}" alt="" class="img-thumbnail avatar">
                 <div class="card mt-4">
                     <div class="card-body">
                         <h6>Upload a different photo</h6>
@@ -21,6 +21,9 @@
                     <label for="">Name:</label>
                     <input type="text" name="name" value="" class="form-control">
                 </div>
+                <x-errors
+                    :errors="$errors"
+                />
                 <div class="form-group">
                     <input type="submit" value="Save Changes" class="btn btn-primary">
 
