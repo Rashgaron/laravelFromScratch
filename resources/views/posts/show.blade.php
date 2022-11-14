@@ -23,9 +23,10 @@
             <p>Currently read by {{ $counter }} people</p>
 
             <h2>Comments: </h2>
+            @include("comments._form")
             @forelse ($post->comments as $comment)
                 <p>{{ $comment->content }}</p>
-                <x-updated date="{{ $comment->created_at }}" />
+                <x-updated date="{{ $comment->created_at }}" name="{{ $comment->user->name }}" :isTrashed="$post->trashed()" />
             @empty
                 <p>No comments yet</p>
             @endforelse

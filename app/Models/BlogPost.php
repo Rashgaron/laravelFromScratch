@@ -35,6 +35,13 @@ class BlogPost extends Model
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
+    public function scopeLatestWithRelations(Builder $query)
+    {
+        return $query->latest()
+            ->withCount('comments')
+            ->with('user')
+            ->with('tags');
+    }
     public function scopeMostCommented(Builder $query)
     {
         //comments_count
@@ -49,7 +56,7 @@ class BlogPost extends Model
 
         // deleting data from cache when it's edited !!!
         static::updating(function(BlogPost $blogPost){
-            Cache::forget("blog-post-{$blogPost->id}");
+            Cache::tags(['blog-post'])->forget("blog-post-{$blogPost->id}");
         });
 
         static::deleting(function ($blogPost) {
