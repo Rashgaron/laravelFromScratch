@@ -9,7 +9,7 @@
     <div>{{ $post->content }}</div>
 </a>
 
-<x-updated date="{{ $post->created_at }}" name="{{ $post->user->name }}" :isTrashed="$post->trashed()">
+<x-updated date="{{ $post->created_at }}" name="{{ $post->user->name }}" :userId="$post->user->id"  :isTrashed="$post->trashed()">
 </x-updated>
 
 <x-tags

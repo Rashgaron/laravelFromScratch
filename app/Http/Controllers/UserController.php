@@ -53,7 +53,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
-        dd($user);
+        return view('users.show', ['user' => $user]);
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
-        dd($user);
+        return view('users.edit', ['user'=>$user]);
     }
 
     /**
