@@ -11,8 +11,8 @@
                 <div
                     style="background-image: url('{{ $post->image->url() }}'); min-height: 500px; color: white; text-align:center; background-attachment: fixed;">
                     <h1 style="padding-top: 100px; text-shadow: 1px 2px #000;">
-            @else
-                    <h1>
+                    @else
+                        <h1>
             @endif
             <h1>{{ $post->title }}
                 <x-badge :show="now()->diffInMinutes($post->created_at) < 50" type="primary">
@@ -20,17 +20,13 @@
                 </x-badge>
             </h1>
             @if ($post->image)
-                    </h1>
-                </div>
-            @else
-                    </h1>
-            @endif
+                </h1>
+        </div>
+    @else
+        </h1>
+        @endif
 
         <p>{{ $post->content }}</p>
-
-        {{-- <img src="{{ asset($post->image->path) }}" /> --}}
-        {{-- <img src="{{ $post->image->url() }}" /> --}}
-
 
         <x-updated date="{{ $post->created_at }}" name="{{ $post->user->name }}" :isTrashed="$post->trashed()" />
 
@@ -41,13 +37,11 @@
         <p>Currently read by {{ $counter }} people</p>
 
         <h2>Comments: </h2>
-        @include('comments._form')
-        @forelse ($post->comments as $comment)
-            <p>{{ $comment->content }}</p>
-            <x-updated date="{{ $comment->created_at }}" name="{{ $comment->user->name }}" :isTrashed="$post->trashed()" />
-        @empty
-            <p>No comments yet</p>
-        @endforelse
+        <x-commentForm :route="route('posts.comments.store', ['post' => $post->id])" :errors="$errors" />
+
+        <x-commentList :comments="$post->comments" />
+
+        
     </div>
     <div class="col-4">
         @include('posts._activity');

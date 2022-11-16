@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComment;
-use App\Models\BlogPost;
+use App\Models\User;
 
-class PostCommentController extends Controller
+class UserCommentController extends Controller
 {
     public function __construct()
     {
@@ -17,9 +17,9 @@ class PostCommentController extends Controller
     // Por eso, además de tener la request, también hemos puesto el $post
     // Otra opción sería coger el postId de la request y hacer el fetch a mano 
 
-    public function store(BlogPost $post, StoreComment $request)
+    public function store(User $user, StoreComment $request)
     {
-        $post->comments()->create([
+        $user->commentsOn()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id
         ]);

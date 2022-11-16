@@ -29,9 +29,12 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Blade::component('components.badge', 'badge');
         Blade::component('components.updated', 'updated');
+        Blade::aliasComponent('components.updated', 'updated');
         Blade::component('components.card', 'card');
         Blade::component('components.tags', 'tags');
         Blade::component('components.errors', 'errors');
+        Blade::component('components.comment-form', 'commentForm');
+        Blade::component('components.comment-list', 'commentList');
 
         // make available everywhere
         // view()->composer('*', ActivityComposer::class);

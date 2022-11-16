@@ -1,6 +1,6 @@
 <div class="mb-2 mt-2">
     @auth
-        <form action="{{ route('posts.comments.store', ['post' => $post->id]) }}" method="POST">
+        <form action="{{ $route }}" method="POST">
             @csrf
             <div>
                 <div class="form-group">
@@ -10,9 +10,7 @@
                 <input class="btn btn-primary btn-block" type="submit" value="Add comment">
             </div>
         </form>
-        <x-errors
-            :errors="$errors"
-        />
+        <x-errors :errors="$errors" />
     @else
         <a href="{{ route('login') }}">Sign-in</a> to post comments!
     @endauth
