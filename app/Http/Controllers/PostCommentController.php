@@ -7,16 +7,18 @@ use App\Http\Requests\StoreComment;
 use App\Jobs\NotifyUsersPostWasCommented;
 use App\Jobs\SendCommentEmail;
 use App\Mail\CommentPosted;
-use App\Mail\CommentPostedMarkdown;
 use App\Models\BlogPost;
-use Illuminate\Contracts\Mail\Mailable;
-use Illuminate\Support\Facades\Mail;
 
 class PostCommentController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth')->only(['store']);
+    }
+
+    public function index(BlogPost $post)
+    {
+        return $post->comments()->with('user')->get();
     }
 
     // posts/{post}/comments

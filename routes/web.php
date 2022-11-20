@@ -29,7 +29,7 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact')
 Route::get('/single', AboutController::class);
 Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('post.tags.index');
 Route::resource('posts', PostsController::class);
-Route::resource('posts.comments', PostCommentController::class)->only(['store']);
+Route::resource('posts.comments', PostCommentController::class)->only(['store', 'index']);
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
 Route::resource('users', UserController::class)->only(['show', 'edit', 'update',]);
 Auth::routes();
