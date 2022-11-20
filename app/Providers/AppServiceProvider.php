@@ -2,12 +2,17 @@
 
 namespace App\Providers;
 
+use App\Contracts\CounterCountract;
 use App\Http\ViewComposers\ActivityComposer;
 use App\Models\BlogPost;
 use App\Models\Comment;
 use App\Observers\BlogPostObserver;
 use App\Observers\CommentObserver;
+use App\Services\Counter;
+use App\Services\DummyCounter;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -47,5 +52,19 @@ class AppServiceProvider extends ServiceProvider
 
         BlogPost::observe(BlogPostObserver::class);
         Comment::observe(CommentObserver::class);
+
+        $this->app->singleton(Counter::class, function($app){
+            return new Counter(
+                env('COUNTER_TIMEOUT'),
+                $app->make('Illuminate\Contracts\Cache\Factory'),
+                $app->make('Illuminate\Contracts\Session\Session'),
+            );
+        });
+
+        $this->app->bind(
+            'App\Contracts\CounterContract',
+            Counter::class,
+            // DummyCounter::class
+        );
     }
 }
