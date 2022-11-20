@@ -20,8 +20,6 @@ class PostsController extends Controller
     {
         $this->middleware('auth')
             ->only(['create', 'destroy', 'store', 'edit', 'update']);
-
-        // $this->counter = $counter;
     }
     /**
      * Display a listing of the resource.

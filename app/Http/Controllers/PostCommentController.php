@@ -9,6 +9,7 @@ use App\Jobs\SendCommentEmail;
 use App\Mail\CommentPosted;
 use App\Models\BlogPost;
 use App\Http\Resources\Comment as CommentResource;
+use App\Models\Comment;
 
 class PostCommentController extends Controller
 {
