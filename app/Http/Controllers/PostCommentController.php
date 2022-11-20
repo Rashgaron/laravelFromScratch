@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPosted as EventsCommentPosted;
 use App\Http\Requests\StoreComment;
+use App\Jobs\NotifyUsersPostWasCommented;
+use App\Jobs\SendCommentEmail;
+use App\Mail\CommentPosted;
+use App\Mail\CommentPostedMarkdown;
 use App\Models\BlogPost;
+use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Support\Facades\Mail;
 
 class PostCommentController extends Controller
 {
@@ -19,10 +26,16 @@ class PostCommentController extends Controller
 
     public function store(BlogPost $post, StoreComment $request)
     {
-        $post->comments()->create([
+        $comment = $post->comments()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id
         ]);
+
+        $this->dispatch(new SendCommentEmail($post, $comment));
+
+        NotifyUsersPostWasCommented::dispatch($comment);
+
+        event(new CommentPosted($comment));
 
         return redirect()->back()
             ->withStatus('Comment was created!');

@@ -74,4 +74,10 @@ class User extends Authenticatable
         ->has('blogPosts','>=', 2 )
         ->orderBy('blog_posts_count', 'desc');
     } 
+
+    public function scopeThatIsAnAdmin(Builder $query)
+    {
+        return $query->where('is_admin', true);
+
+    }
 }
